@@ -1,0 +1,25 @@
+<component name="libraryTable">
+  <library name="antlr-2.7.7">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/lk/ijse/orm/hibernate_project/lib/antlr-2.7.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lk/ijse/orm/hibernate_project/lib/byte-buddy-1.12.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lk/ijse/orm/hibernate_project/lib/classmate-1.5.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lk/ijse/orm/hibernate_project/lib/FastInfoset-1.2.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lk/ijse/orm/hibernate_project/lib/hibernate-commons-annotations-5.1.2.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lk/ijse/orm/hibernate_project/lib/hibernate-core-5.6.5.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lk/ijse/orm/hibernate_project/lib/istack-commons-runtime-3.0.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lk/ijse/orm/hibernate_project/lib/jandex-2.4.2.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lk/ijse/orm/hibernate_project/lib/javax.activation-api-1.2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lk/ijse/orm/hibernate_project/lib/javax.persistence-api-2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lk/ijse/orm/hibernate_project/lib/jaxb-api-2.3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lk/ijse/orm/hibernate_project/lib/jaxb-runtime-2.3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lk/ijse/orm/hibernate_project/lib/jboss-logging-3.4.3.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lk/ijse/orm/hibernate_project/lib/jboss-transaction-api_1.2_spec-1.1.1.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lk/ijse/orm/hibernate_project/lib/mysql-connector-java-8.0.26.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lk/ijse/orm/hibernate_project/lib/stax-ex-1.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lk/ijse/orm/hibernate_project/lib/txw2-2.3.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
