@@ -24,7 +24,6 @@ public class Reservation {
     private Date reservationDate;
 
     public Reservation() {
-
     }
 
     public Reservation(Long id, Student student, Room room, Date reservationDate) {
