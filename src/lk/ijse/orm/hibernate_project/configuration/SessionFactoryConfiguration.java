@@ -33,7 +33,7 @@ public class SessionFactoryConfiguration {
         Properties properties = new Properties();
 
         try {
-            properties.load(SessionFactoryConfiguration.class.getResourceAsStream("/prop/hibernate.properties"));
+            properties.load(SessionFactoryConfiguration.class.getResourceAsStream("/lk/ijse/orm/hibernate_project/prop/hibernate.properties"));
         } catch (Exception e) {
         }
 
