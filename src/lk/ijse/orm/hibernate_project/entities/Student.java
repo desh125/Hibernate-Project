@@ -1,65 +1,95 @@
 package lk.ijse.orm.hibernate_project.entities;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "students")
 public class Student {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "student_id")
-    private Long id;
+    @Column(name = "student_id", length = 40)
+    private String StudentId;
+    @Column(name = "full_name", nullable = false, columnDefinition = "TEXT")
+    private String FullName;
+    @Column(name = "address", nullable = false, columnDefinition = "TEXT")
+    private String Address;
+    @Column(name = "contact_number", nullable = false, length = 50)
+    private String ContactNumber;
+    @Column(name = "dob", nullable = false, length = 50)
+    private String DateOfBirth;
+    @Column(name = "gender", nullable = false, length = 50)
+    private String Gender;
 
-    @Column(name = "student_name")
-    private String name;
-
-    @Column(name = "campus_id")
-    private String campusId;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "registration_date")
-    private Date registrationDate;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "Student")
+    private List<Reservation> reservationEntities = new ArrayList<>();
 
     public Student() {
     }
-    public Student(Long id, String name, String campusId, Date registrationDate) {
-        this.id = id;
-        this.name = name;
-        this.campusId = campusId;
-        this.registrationDate = registrationDate;
+
+    public Student(String studentId, String fullName, String address, String contactNumber, String dateOfBirth, String gender, List<Reservation> reservationEntities) {
+        StudentId = studentId;
+        FullName = fullName;
+        Address = address;
+        ContactNumber = contactNumber;
+        DateOfBirth = dateOfBirth;
+        Gender = gender;
+        this.reservationEntities = reservationEntities;
     }
 
-    public Long getId() {
-        return id;
+    public String getStudentId() {
+        return StudentId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setStudentId(String studentId) {
+        StudentId = studentId;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return FullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        FullName = fullName;
     }
 
-    public String getCampusId() {
-        return campusId;
+    public String getAddress() {
+        return Address;
     }
 
-    public void setCampusId(String campusId) {
-        this.campusId = campusId;
+    public void setAddress(String address) {
+        Address = address;
     }
 
-    public Date getRegistrationDate() {
-        return registrationDate;
+    public String getContactNumber() {
+        return ContactNumber;
     }
 
-    public void setRegistrationDate(Date registrationDate) {
-        this.registrationDate = registrationDate;
+    public void setContactNumber(String contactNumber) {
+        ContactNumber = contactNumber;
+    }
+
+    public String getDateOfBirth() {
+        return DateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        DateOfBirth = dateOfBirth;
+    }
+
+    public String getGender() {
+        return Gender;
+    }
+
+    public void setGender(String gender) {
+        Gender = gender;
+    }
+
+    public List<Reservation> getReservationEntities() {
+        return reservationEntities;
+    }
+
+    public void setReservationEntities(List<Reservation> reservationEntities) {
+        this.reservationEntities = reservationEntities;
     }
 }
