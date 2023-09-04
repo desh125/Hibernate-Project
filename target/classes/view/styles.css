@@ -1,0 +1,60 @@
+#root {
+    -fx-background-image: url("/img/BlueBackground.jpg");
+    -fx-background-size: cover;
+}
+
+
+TextField {
+    -fx-background-color: white;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+JFXButton {
+    -fx-cursor: hand;
+    -fx-background-color: lightblue;
+}
+
+Button {
+    -fx-cursor: hand;
+}
+
+#btnSaveOnAction {
+    -fx-background-color: lightblue;
+}
+
+#btnUpdateOnAction {
+    -fx-background-color: lightblue;
+}
+
+#btnDeleteOnAction {
+    -fx-background-color: lightblue;
+}
+
+TableView {
+    -fx-background-color: white;
+}
+
+TableColumn {
+    -fx-alignment: center;
+}
+
+JFXComboBox {
+    -fx-background-color: white;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+#searchButton {
+    -fx-background-color: lightblue;
+}
+
+Label[text="Search"] {
+    -fx-font-weight: bold;
+}
+
+
+
+
+
+

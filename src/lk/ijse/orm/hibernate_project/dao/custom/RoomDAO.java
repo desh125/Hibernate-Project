@@ -6,7 +6,7 @@ import org.hibernate.Session;
 
 import java.util.List;
 
-public interface RoomDAO extends CrudDAO<Room, Integer> {
+public interface RoomDAO extends CrudDAO<Room, String> {
     void SetSession(Session session);
 
     List<String> getRoomType();

@@ -1,6 +1,7 @@
 package lk.ijse.orm.hibernate_project.dao;
 
 import lk.ijse.orm.hibernate_project.dao.custom.impl.ReservationDaoImpl;
+import lk.ijse.orm.hibernate_project.dao.custom.impl.RoomDaoImpl;
 import lk.ijse.orm.hibernate_project.dao.custom.impl.StudentDaoImpl;
 
 public class DaoFactory {
