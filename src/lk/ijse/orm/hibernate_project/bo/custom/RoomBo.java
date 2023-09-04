@@ -1,4 +1,20 @@
 package lk.ijse.orm.hibernate_project.bo.custom;
 
-public class RoomBo {
+import lk.ijse.orm.hibernate_project.bo.SuperBo;
+import lk.ijse.orm.hibernate_project.dto.RoomDTO;
+
+import java.util.List;
+
+public interface RoomBo extends SuperBo {
+    String SaveRoom(RoomDTO roomDTO);
+
+    RoomDTO getRoom(String room_type_id);
+
+    boolean UpdateRoom(RoomDTO roomDTO);
+
+    boolean DeleteRoom(RoomDTO roomDTO);
+
+    List<String> getAllRoomType();
+
+    List<String> getAllRoomTypeID();
 }

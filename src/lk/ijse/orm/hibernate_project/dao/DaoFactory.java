@@ -1,5 +1,8 @@
 package lk.ijse.orm.hibernate_project.dao;
 
+import lk.ijse.orm.hibernate_project.dao.custom.impl.ReservationDaoImpl;
+import lk.ijse.orm.hibernate_project.dao.custom.impl.StudentDaoImpl;
+
 public class DaoFactory {
 
     private static DaoFactory daoFactory;
@@ -14,7 +17,7 @@ public class DaoFactory {
     public <SuperDAO> SuperDAO getDao(DaoType daoType) {
         switch (daoType) {
             case STUDENT:
-                return (SuperDAO) new ();
+                return (SuperDAO) new StudentDaoImpl();
             case ROOM:
                 return (SuperDAO) new RoomDaoImpl();
             case RESERVATION:
