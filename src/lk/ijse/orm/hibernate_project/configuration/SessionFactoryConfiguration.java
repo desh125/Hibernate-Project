@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.io.IOException;
 import java.util.Properties;
 
 public class SessionFactoryConfiguration {
@@ -15,13 +16,15 @@ public class SessionFactoryConfiguration {
     private final SessionFactory sessionFactory;
 
     private SessionFactoryConfiguration() {
+        Properties properties = loadHibernateProperties();
+
         sessionFactory = new Configuration()
                 .configure()
                 .addAnnotatedClass(Student.class)
                 .addAnnotatedClass(Room.class)
                 .addAnnotatedClass(Reservation.class)
+                .addProperties(properties)
                 .buildSessionFactory();
-
     }
 
     public static SessionFactoryConfiguration getInstance() {
@@ -29,15 +32,20 @@ public class SessionFactoryConfiguration {
     }
 
     public Session getSession() {
-
-        Properties properties = new Properties();
-
-        try {
-            properties.load(SessionFactoryConfiguration.class.getResourceAsStream("/lk/ijse/orm/hibernate_project/prop/hibernate.properties"));
-        } catch (Exception e) {
-        }
-
         return sessionFactory.openSession();
     }
 
+    private Properties loadHibernateProperties() {
+        Properties properties = new Properties();
+
+        try {
+            properties.load(SessionFactoryConfiguration.class.getResourceAsStream("hibernate.properties"));
+        } catch (IOException e) {
+            // Handle the exception (e.g., log or throw a custom exception)
+            e.printStackTrace();
+        }
+
+        return properties;
+    }
 }
+
