@@ -1,5 +1,7 @@
 package lk.ijse.orm.hibernate_project.entities;
 
+import lk.ijse.orm.hibernate_project.dto.StudentDTO;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,5 +93,16 @@ public class Student {
 
     public void setReservationEntities(List<Reservation> reservationEntities) {
         this.reservationEntities = reservationEntities;
+    }
+
+    public StudentDTO ToDto() {
+        StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setStudentId(this.StudentId);
+        studentDTO.setFullName(this.FullName);
+        studentDTO.setAddress(this.Address);
+        studentDTO.setContactNumber(this.ContactNumber);
+        studentDTO.setDateOfBirth(this.DateOfBirth);
+        studentDTO.setGender(this.Gender);
+        return studentDTO;
     }
 }
