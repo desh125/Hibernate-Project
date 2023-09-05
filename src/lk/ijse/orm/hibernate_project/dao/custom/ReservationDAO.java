@@ -14,4 +14,6 @@ public interface ReservationDAO extends CrudDAO<Reservation, String> {
     List<Student> GetStudentName(String ID);
 
     List<Room> GetKeyMoney(String ID);
+
+    List<Reservation> getAll();
 }

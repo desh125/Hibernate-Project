@@ -57,4 +57,11 @@ public class ReservationDaoImpl implements ReservationDAO {
         List<Room> list = query.list();
         return list;
     }
+
+    @Override
+    public List<Reservation> getAll() {
+        String hql = "FROM Reservation";
+        Query<Reservation> query = session.createQuery(hql, Reservation.class);
+        return query.list();
+    }
 }

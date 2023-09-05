@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.effect.Blend?>
@@ -31,7 +31,6 @@
         <Label layoutX="278.0" layoutY="91.0" text="Room Type Id"/>
         <TextField fx:id="roomTypeId" layoutX="278.0" layoutY="111.0" prefHeight="35.0" prefWidth="207.0"/>
         <Label layoutX="37.0" layoutY="161.0" text="Status"/>
-        <TextField fx:id="status" layoutX="36.0" layoutY="181.0" prefHeight="35.0" prefWidth="207.0"/>
         <JFXButton buttonType="RAISED" layoutX="524.0" layoutY="111.0" onAction="#btnSaveOnAction" prefHeight="24.0"
                    prefWidth="61.0" style="-fx-background-color: lightblue;" text="Save">
             <cursor>
@@ -68,7 +67,8 @@
             </columns>
         </TableView>
         <Label layoutX="279.0" layoutY="161.0" text="Date"/>
-        <TextField fx:id="date" layoutX="278.0" layoutY="181.0" prefHeight="35.0" prefWidth="207.0"/>
+        <JFXComboBox fx:id="status" layoutX="36.0" layoutY="181.0" prefHeight="35.0" prefWidth="207.0"/>
+        <DatePicker fx:id="date" layoutX="278.0" layoutY="181.0" prefHeight="35.0" prefWidth="207.0"/>
     </children>
     <effect>
         <Blend/>

@@ -58,14 +58,14 @@
                 <Cursor fx:constant="HAND"/>
             </cursor>
         </JFXButton>
-        <TableView fx:id="tableView" layoutX="38.0" layoutY="328.0"
-                   prefHeight="203.0" prefWidth="536.0">
+        <TableView fx:id="tableView" layoutX="38.0" layoutY="328.0" prefHeight="203.0" prefWidth="536.0">
             <columns>
                 <TableColumn fx:id="colId" prefWidth="75.0" text="Student Id"/>
-                <TableColumn fx:id="colName" prefWidth="109.66668701171875" text="Name"/>
-                <TableColumn fx:id="colAddress" prefWidth="118.0" text="Address"/>
-                <TableColumn fx:id="colNumber" prefWidth="118.0" text="TP Number"/>
-                <TableColumn fx:id="colGender" prefWidth="118.0" text="Gender"/>
+                <TableColumn fx:id="colName" prefWidth="86.66668701171875" text="Name"/>
+                <TableColumn fx:id="colAddress" prefWidth="100.0" text="Address"/>
+                <TableColumn fx:id="colNumber" prefWidth="105.33331298828125" text="TP Number"/>
+                <TableColumn fx:id="colGender" prefWidth="77.0" text="Gender"/>
+                <TableColumn fx:id="colDob" prefWidth="98.0" text="DOB"/>
             </columns>
         </TableView>
         <Label layoutX="279.0" layoutY="141.0" text="Contact Number"/>
