@@ -1,9 +1,11 @@
 package lk.ijse.orm.hibernate_project.controllers;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.orm.hibernate_project.bo.BoFactory;
@@ -18,36 +20,70 @@ import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ReservationController {
+public class ReservationController implements Initializable {
 
     String reservationId = IdGeneratorUtil.generateReservationId();
     @FXML
     private TextField studentId;
+
     @FXML
     private TextField roomTypeId;
-    @FXML
-    private TextField txtId1;
+
     @FXML
     private JFXComboBox<String> status;
+
     @FXML
-    private DatePicker date;
+    private DatePicker startDate;
+
+    @FXML
+    private DatePicker lastDate;
+
+    @FXML
+    private TextField keyMoney;
+
+    @FXML
+    private JFXButton btnSave;
+
+    @FXML
+    private TextField txtId1;
+
+    @FXML
+    private JFXButton searchButton;
+
+    @FXML
+    private JFXButton btnUpdate;
+
+    @FXML
+    private JFXButton btnDelete;
+
     @FXML
     private TableView<ReservationDTO> tableView;
+
     @FXML
     private TableColumn<ReservationDTO, String> colResId;
+
     @FXML
     private TableColumn<ReservationDTO, String> colRoomTypeId;
+
     @FXML
     private TableColumn<ReservationDTO, String> colStatusId;
+
     @FXML
-    private TableColumn<ReservationDTO, String> colDateId;
+    private TableColumn<ReservationDTO, String> colStartDateId;
+
     @FXML
     private TableColumn<ReservationDTO, String> colStudentId;
+
+    @FXML
+    private TableColumn<ReservationDTO, String> colLastDateId;
+
+    @FXML
+    private TableColumn<ReservationDTO, String> colKeyMoneyId;
+
     private StudentBo studentBo;
     private RoomBo roomBo;
     private List<String> dataList = new ArrayList<>();
@@ -55,40 +91,23 @@ public class ReservationController {
 
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
-        // Initialize your TableView and bind columns here
-        colResId.setCellValueFactory(new PropertyValueFactory<>("ReservationId"));
-        colRoomTypeId.setCellValueFactory(new PropertyValueFactory<>("RoomTypeId"));
-        colStatusId.setCellValueFactory(new PropertyValueFactory<>("Status"));
-        colDateId.setCellValueFactory(new PropertyValueFactory<>("OrderDateTime"));
-        colStudentId.setCellValueFactory(new PropertyValueFactory<>("StudentId"));
+        setDataForComboBox();
 
-        // Populate data into the TableView
+        colRoomTypeId.setCellValueFactory(new PropertyValueFactory<>("Room.RoomTypeId"));
+        colStatusId.setCellValueFactory(new PropertyValueFactory<>("Status"));
+        colStartDateId.setCellValueFactory(new PropertyValueFactory<>("OrderDateTime"));
+        colStudentId.setCellValueFactory(new PropertyValueFactory<>("Student.StudentId"));
+        colLastDateId.setCellValueFactory(new PropertyValueFactory<>("LastDate"));
+        colKeyMoneyId.setCellValueFactory(new PropertyValueFactory<>("KeyMoney"));
+
+
+        reservationBo = BoFactory.getBoFactory().getBo(BoFactory.BoType.RESERVATION);
         refreshTableView();
 
 
-        // Add a double-click event handler to the TableView
-        tableView.setRowFactory(tv -> {
-            TableRow<ReservationDTO> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                    // Double-click detected
-                    ReservationDTO rowData = row.getItem();
-                    populateFieldsWithData(rowData); // Populate the data into form fields
-                }
-            });
-            return row;
-        });
     }
 
-    private void populateFieldsWithData(ReservationDTO rowData) {
-        if (rowData != null) {
-            studentId.setText(rowData.getStudent().getStudentId());
-            roomTypeId.setText(rowData.getRoom().getRoomTypeId());
-            date.setValue(LocalDate.parse(rowData.getLastDate()));
-            status.setValue(rowData.getStatus());
-            reservationId = rowData.getReservationId(); // Update reservationId for updates
-        }
-    }
+
 
     private void refreshTableView() {
         // Fetch data from your Bo and populate the TableView
@@ -114,7 +133,7 @@ public class ReservationController {
         studentDTO.setStudentId(studentId.getText());
         roomDTO.setRoomTypeId(roomTypeId.getText());
 
-        java.time.LocalDate selectedDate = date.getValue();
+        java.time.LocalDate selectedDate = startDate.getValue();
 
         reservationDTO.setReservationId(reservationId);
         reservationDTO.setStudent(studentDTO.ToEntity());
@@ -142,10 +161,7 @@ public class ReservationController {
 
     @FXML
     private void btnUpdateOnAction() {
-        // Handle the Update button action here
-        // Retrieve data from the form fields and create a ReservationDTO
-        // Use reservationBo to update the reservation
-        // Refresh the TableView
+
 
         ReservationDTO reservationDTO = new ReservationDTO();
         StudentDTO studentDTO = new StudentDTO();
@@ -157,12 +173,12 @@ public class ReservationController {
         studentDTO.setStudentId(studentId.getText());
         roomDTO.setRoomTypeId(roomTypeId.getText());
 
-        java.time.LocalDate selectedDate = date.getValue();
+        // java.time.LocalDate selectedDate = date.getValue();
 
         reservationDTO.setReservationId(reservationId);
         reservationDTO.setStudent(studentDTO.ToEntity());
         reservationDTO.setRoom(roomDTO.ToEntity());
-        reservationDTO.setLastDate(selectedDate.toString());
+        //  reservationDTO.setLastDate(selectedDate.toString());
         reservationDTO.setStatus(status.getValue());
         reservationDTO.setOrderDateTime(Timestamp.valueOf(getCurrentDateTime()));
         reservationDTO.setStudentName(student.getFullName());
@@ -191,10 +207,7 @@ public class ReservationController {
 
     @FXML
     private void btnDeleteOnAction() {
-        // Handle the Delete button action here
-        // Retrieve data from the form fields and create a ReservationDTO
-        // Use reservationBo to delete the reservation
-        // Refresh the TableView
+
     }
 
     @FXML
@@ -206,7 +219,7 @@ public class ReservationController {
         ReservationDTO reservationDTO = reservationBo.getReservationDetails(reservationId);
 
         // Populate the retrieved data into the form fields
-        // You may need to convert and format the data as needed
+
     }
 
     @FXML
@@ -217,7 +230,7 @@ public class ReservationController {
                     ReservationDTO reserversiondetails = reservationBo.getReservationDetails(reservationId);
                     studentId.setText(reserversiondetails.getStudent().getStudentId());
                     roomTypeId.setText(reserversiondetails.getRoom().getRoomTypeId());
-                    date.setValue(LocalDate.parse(reserversiondetails.getLastDate()));
+                    //      date.setValue(LocalDate.parse(reserversiondetails.getLastDate()));
                     status.setValue(reserversiondetails.getStatus());
 
                     // reservationidtxt.setDisable(true);
@@ -245,7 +258,7 @@ public class ReservationController {
     private void setDefault() {
         // reservationId.clear();
         studentId.clear();
-        date.setValue(null);
+        // date.setValue(null);
         roomTypeId.clear();
         status.setValue(null);
     }
@@ -314,16 +327,15 @@ public class ReservationController {
 
                 roomBo.UpdateRoom(roomDTOUpdate);
 
-                // Add a return statement here if needed
-                return roomDTOUpdate; // You might want to return the updated roomDTO
 
-                // If you don't need to return anything here, you can add a return statement for a default value or null
-                // return null; // Or any other default value you want to return
+                return roomDTOUpdate;
+
+
             }
         }
 
-        // Add a default return statement outside of the if-else block
-        return null; // Or any other default value you want to return
+
+        return null;
     }
 
     private enum SelectType {

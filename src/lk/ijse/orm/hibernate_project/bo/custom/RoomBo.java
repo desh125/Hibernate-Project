@@ -6,7 +6,9 @@ import lk.ijse.orm.hibernate_project.dto.RoomDTO;
 import java.util.List;
 
 public interface RoomBo extends SuperBo {
-    String SaveRoom(RoomDTO roomDTO);
+    boolean SaveRoom(RoomDTO roomDTO);
+
+    List<RoomDTO> getAllRooms();
 
     RoomDTO getRoom(String room_type_id);
 

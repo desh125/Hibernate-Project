@@ -66,7 +66,7 @@ public class StudentController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Initialize your TableView and bind columns here
+
         colId.setCellValueFactory(new PropertyValueFactory<>("StudentId"));
         colDob.setCellValueFactory(new PropertyValueFactory<>("DateOfBirth"));
         colName.setCellValueFactory(new PropertyValueFactory<>("FullName"));
@@ -93,12 +93,11 @@ public class StudentController implements Initializable {
                     txtAddress.setText(selectedStudent.getAddress());
                     txtNumber.setText(selectedStudent.getContactNumber());
                     txtGender.setText(selectedStudent.getGender());
-                    // You can also populate other fields as needed
 
-                    // Disable fields that should not be edited during update
+
                     txtId.setDisable(true);
 
-                    // You can now perform update or delete based on the selected student's data
+
                 }
             }
         });
@@ -106,10 +105,7 @@ public class StudentController implements Initializable {
 
     @FXML
     private void btnSaveOnAction() {
-        // Handle the Save button action here
-        // Retrieve data from the form fields and create a StudentDTO
-        // Use studentBo to save the student
-        // Refresh the TableView
+
         studentBo = BoFactory.getBoFactory().getBo(BoFactory.BoType.STUDENT);
 
         StudentDTO studentDTO = new StudentDTO();
@@ -134,10 +130,6 @@ public class StudentController implements Initializable {
 
     @FXML
     private void btnUpdateOnAction() {
-        // Handle the Update button action here
-        // Retrieve data from the form fields and create a StudentDTO
-        // Use studentBo to update the student
-        // Refresh the TableView
 
         StudentDTO studentDTO = new StudentDTO();
         studentDTO.setStudentId(txtId.getText());
@@ -161,10 +153,7 @@ public class StudentController implements Initializable {
 
     @FXML
     private void btnDeleteOnAction() {
-        // Handle the Delete button action here
-        // Retrieve data from the form fields and create a StudentDTO
-        // Use studentBo to delete the student
-        // Refresh the TableView
+
 
         String studentId = txtId.getText();
 
@@ -189,30 +178,34 @@ public class StudentController implements Initializable {
 
     @FXML
     private void codeSearchOnAction() {
-
-        /*
         // Handle the Search button action here
-        String studentId = txtId1.getText();
+        String studentIdValue = txtId1.getText().trim(); // Trim to remove leading/trailing spaces
 
-        // Use studentBo to fetch the student by ID
-        StudentDTO studentDTO = studentBo.GetStudentById(studentId);
-
-        // Populate the retrieved data into the form fields
-        // You may need to convert and format the data as needed
-
-        if (studentDTO != null) {
-            txtId.setText(studentDTO.getStudentId());
-            txtName.setText(studentDTO.getFullName());
-            txtAddress.setText(studentDTO.getAddress());
-            txtNumber.setText(studentDTO.getContactNumber());
-            txtGender.setText(studentDTO.getGender());
-            // Populate other fields if needed
+        if (studentIdValue.isEmpty()) {
+            // If the input is empty, refresh the TableView to show all students
+            refreshTableView();
         } else {
-            showAlert("Student Management", "Student Not Found!", SelectType.WARNING);
+            // Use studentBo to fetch the student by ID
+            StudentDTO studentDTO = studentBo.getStudent(studentIdValue);
+
+            if (studentDTO != null) {
+                // Populate the retrieved data into the form fields
+                txtId.setText(studentDTO.getStudentId());
+                txtName.setText(studentDTO.getFullName());
+                txtDOB.setText(studentDTO.getDateOfBirth());
+                txtAddress.setText(studentDTO.getAddress());
+                txtNumber.setText(studentDTO.getContactNumber());
+                txtGender.setText(studentDTO.getGender());
+
+                // Clear the TableView and add the retrieved student
+                tableView.getItems().clear();
+                tableView.getItems().add(studentDTO);
+            } else {
+                // If no result is found, refresh the TableView to show all students
+                refreshTableView();
+                showAlert("Student Management", "Student Not Found!", SelectType.WARNING);
+            }
         }
-
-
-         */
     }
 
 

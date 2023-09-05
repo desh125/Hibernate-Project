@@ -14,6 +14,11 @@ public class RoomDaoImpl implements RoomDAO {
     public RoomDaoImpl() {
     }
 
+    public List<Room> getAlls() {
+        Query<Room> query = session.createQuery("FROM Room ", Room.class);
+        return query.list();
+    }
+
     @Override
     public String Save(Room roomEntity) {
         return (String) session.save(roomEntity);

@@ -12,4 +12,6 @@ public interface RoomDAO extends CrudDAO<Room, String> {
     List<String> getRoomType();
 
     List<String> getRoomTypeID();
+
+    List<Room> getAlls();
 }

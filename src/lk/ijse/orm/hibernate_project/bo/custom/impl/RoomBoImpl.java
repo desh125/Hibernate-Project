@@ -9,6 +9,7 @@ import lk.ijse.orm.hibernate_project.entities.Room;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RoomBoImpl implements RoomBo {
@@ -16,7 +17,7 @@ public class RoomBoImpl implements RoomBo {
     RoomDAO roomDao = DaoFactory.getDaoFactory().getDao(DaoFactory.DaoType.ROOM);
 
     @Override
-    public String SaveRoom(RoomDTO roomDTO) {
+    public boolean SaveRoom(RoomDTO roomDTO) {
         Session session = SessionFactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
         try {
@@ -24,12 +25,12 @@ public class RoomBoImpl implements RoomBo {
             String save = roomDao.Save(roomDTO.ToEntity());
             transaction.commit();
             session.close();
-            return save;
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             transaction.rollback();
             session.close();
-            return "-1";
+            return false;
         }
 
     }
@@ -110,5 +111,26 @@ public class RoomBoImpl implements RoomBo {
             e.printStackTrace();
             throw e;
         }
+    }
+
+    @Override
+    public List<RoomDTO> getAllRooms() {
+        List<RoomDTO> roomDTOS = new ArrayList<>();
+        Session session = SessionFactoryConfiguration.getInstance().getSession();
+
+        try {
+            roomDao.SetSession(session);
+            List<Room> rooms = roomDao.getAlls(); // Replace with your actual getAll method in StudentDao
+
+            for (Room room : rooms) {
+                roomDTOS.add(room.ToDto());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return roomDTOS;
     }
 }
