@@ -26,8 +26,8 @@
                 <Font name="Lucida Console" size="20.0"/>
             </font>
         </Label>
-        <TextField fx:id="studentId" layoutX="36.0" layoutY="91.0" prefHeight="35.0" prefWidth="207.0"/>
-        <Label layoutX="36.0" layoutY="71.0" text="Student Id"/>
+        <TextField fx:id="studentId" layoutX="278.0" layoutY="159.0" prefHeight="35.0" prefWidth="207.0"/>
+        <Label layoutX="278.0" layoutY="139.0" text="Student Id"/>
         <Label layoutX="278.0" layoutY="71.0" text="Room Type Id"/>
         <TextField fx:id="roomTypeId" layoutX="278.0" layoutY="91.0" prefHeight="35.0" prefWidth="207.0"/>
         <Label layoutX="37.0" layoutY="141.0" text="Status"/>
@@ -37,14 +37,14 @@
                 <Cursor fx:constant="HAND"/>
             </cursor>
         </JFXButton>
-        <TextField fx:id="txtId1" layoutX="84.0" layoutY="293.0" prefHeight="30.0" prefWidth="126.0"/>
-        <JFXButton fx:id="searchButton" layoutX="210.0" layoutY="293.0" onAction="#codeSearchOnAction" prefHeight="30.0"
+        <TextField fx:id="txtId1" layoutX="59.0" layoutY="293.0" prefHeight="30.0" prefWidth="126.0"/>
+        <JFXButton fx:id="searchButton" layoutX="185.0" layoutY="293.0" onAction="#codeSearchOnAction" prefHeight="30.0"
                    prefWidth="61.0" style="-fx-background-color: lightblue;" text="Search" textAlignment="CENTER">
             <cursor>
                 <Cursor fx:constant="HAND"/>
             </cursor>
         </JFXButton>
-        <Label layoutX="38.0" layoutY="301.0" text="Search"/>
+        <Label layoutX="13.0" layoutY="301.0" text="Search"/>
         <JFXButton buttonType="RAISED" layoutX="524.0" layoutY="191.0" onAction="#btnDeleteOnAction" prefHeight="24.0"
                    prefWidth="61.0" style="-fx-background-color: lightblue;" text="Delete">
             <cursor>
@@ -59,22 +59,30 @@
         </JFXButton>
         <TableView fx:id="tableView" layoutX="8.0" layoutY="338.0" prefHeight="203.0" prefWidth="581.0">
             <columns>
-                <TableColumn fx:id="colResId" prefWidth="85.66668701171875" text="Res Id"/>
-                <TableColumn fx:id="colRoomTypeId" prefWidth="95.33331298828125" text="Room Type Id"/>
-                <TableColumn fx:id="colStatusId" prefWidth="78.66668701171875" text="Status"/>
-                <TableColumn fx:id="colStartDateId" prefWidth="91.66668701171875" text="Start Date"/>
-                <TableColumn fx:id="colStudentId" prefWidth="77.33331298828125" text="Student Id"/>
-                <TableColumn fx:id="colLastDateId" prefWidth="72.0" text="Last Date"/>
-                <TableColumn fx:id="colKeyMoneyId" prefWidth="77.0" text="Key Money"/>
+                <TableColumn fx:id="colResId" prefWidth="144.66668701171875" text="Res Id"/>
+                <TableColumn fx:id="colRoomTypeId" prefWidth="97.33331298828125" text="Room Type Id"/>
+                <TableColumn fx:id="colStatusId" prefWidth="70.33331298828125" text="Status"/>
+                <TableColumn fx:id="colStartDateId" prefWidth="85.33331298828125" text="Start Date"/>
+                <TableColumn fx:id="colStudentId" prefWidth="97.66668701171875" text="Student Id"/>
+                <TableColumn fx:id="colLastDateId" prefWidth="89.0" text="Last Date"/>
             </columns>
         </TableView>
-        <Label layoutX="279.0" layoutY="141.0" text="Start Date"/>
+        <Label layoutX="37.0" layoutY="217.0" text="Start Date"/>
         <JFXComboBox fx:id="status" layoutX="36.0" layoutY="161.0" prefHeight="35.0" prefWidth="207.0"/>
-        <DatePicker fx:id="startDate" layoutX="278.0" layoutY="161.0" prefHeight="35.0" prefWidth="207.0"/>
-        <Label layoutX="37.0" layoutY="216.0" text="Last Date"/>
-        <DatePicker fx:id="lastDate" layoutX="36.0" layoutY="236.0" prefHeight="35.0" prefWidth="207.0"/>
-        <TextField fx:id="keyMoney" layoutX="278.0" layoutY="236.0" prefHeight="35.0" prefWidth="207.0"/>
-        <Label layoutX="278.0" layoutY="216.0" text="Key Money"/>
+        <DatePicker fx:id="startDate" layoutX="36.0" layoutY="237.0" prefHeight="35.0" prefWidth="207.0"/>
+        <Label layoutX="279.0" layoutY="216.0" text="Last Date"/>
+        <DatePicker fx:id="lastDate" layoutX="278.0" layoutY="236.0" prefHeight="35.0" prefWidth="207.0"/>
+        <TextField fx:id="reservationId" layoutX="36.0" layoutY="91.0" prefHeight="35.0" prefWidth="207.0"/>
+        <Label layoutX="36.0" layoutY="71.0" text="Reservation Id"/>
+        <ComboBox fx:id="keyMoneyStatus" layoutX="316.0" layoutY="293.0" prefHeight="30.0" prefWidth="150.0"/>
+        <JFXButton fx:id="searchButtonForStatus" layoutX="466.0" layoutY="293.0" onAction="#codeSearchOnStatusAction"
+                   prefHeight="30.0" prefWidth="61.0" style="-fx-background-color: lightblue;" text="Search"
+                   textAlignment="CENTER">
+            <cursor>
+                <Cursor fx:constant="HAND"/>
+            </cursor>
+        </JFXButton>
+        <Label layoutX="278.0" layoutY="301.0" text="Status"/>
     </children>
     <effect>
         <Blend/>

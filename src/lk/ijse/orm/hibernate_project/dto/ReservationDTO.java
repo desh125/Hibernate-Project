@@ -21,7 +21,6 @@ public class ReservationDTO {
     private Room Room;
     private String Status;
     private String StudentName;
-    private String KeyMoney;
 
     public Reservation ToEntity() {
         Reservation reservation = new Reservation();
@@ -31,7 +30,6 @@ public class ReservationDTO {
         reservation.setRoom(this.Room);
         reservation.setStatus(this.Status);
         reservation.setStudentName(this.StudentName);
-        reservation.setKeyMoney(this.KeyMoney);
         return reservation;
     }
 
@@ -44,7 +42,6 @@ public class ReservationDTO {
         reservation.setRoom(this.Room);
         reservation.setStatus(this.Status);
         reservation.setStudentName(this.StudentName);
-        reservation.setKeyMoney(this.KeyMoney);
         return reservation;
     }
 

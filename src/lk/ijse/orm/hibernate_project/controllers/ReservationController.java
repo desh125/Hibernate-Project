@@ -2,6 +2,7 @@ package lk.ijse.orm.hibernate_project.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,22 +12,25 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.orm.hibernate_project.bo.BoFactory;
 import lk.ijse.orm.hibernate_project.bo.custom.ReservationBo;
 import lk.ijse.orm.hibernate_project.bo.custom.RoomBo;
-import lk.ijse.orm.hibernate_project.bo.custom.StudentBo;
 import lk.ijse.orm.hibernate_project.dto.ReservationDTO;
 import lk.ijse.orm.hibernate_project.dto.RoomDTO;
 import lk.ijse.orm.hibernate_project.dto.StudentDTO;
 
-import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class ReservationController implements Initializable {
 
-    String reservationId = IdGeneratorUtil.generateReservationId();
+    @FXML
+    private TextField reservationId;
+
     @FXML
     private TextField studentId;
 
@@ -61,6 +65,9 @@ public class ReservationController implements Initializable {
     private JFXButton btnDelete;
 
     @FXML
+    private ComboBox<String> keyMoneyStatus;
+
+    @FXML
     private TableView<ReservationDTO> tableView;
 
     @FXML
@@ -81,30 +88,49 @@ public class ReservationController implements Initializable {
     @FXML
     private TableColumn<ReservationDTO, String> colLastDateId;
 
-    @FXML
-    private TableColumn<ReservationDTO, String> colKeyMoneyId;
 
-    private StudentBo studentBo;
-    private RoomBo roomBo;
     private List<String> dataList = new ArrayList<>();
     private ReservationBo reservationBo = BoFactory.getBoFactory().getBo(BoFactory.BoType.RESERVATION);
 
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
         setDataForComboBox();
-
-        colRoomTypeId.setCellValueFactory(new PropertyValueFactory<>("Room.RoomTypeId"));
+        setDataForComboBox2();
+        colResId.setCellValueFactory(new PropertyValueFactory<>("ReservationId"));
         colStatusId.setCellValueFactory(new PropertyValueFactory<>("Status"));
         colStartDateId.setCellValueFactory(new PropertyValueFactory<>("OrderDateTime"));
-        colStudentId.setCellValueFactory(new PropertyValueFactory<>("Student.StudentId"));
         colLastDateId.setCellValueFactory(new PropertyValueFactory<>("LastDate"));
-        colKeyMoneyId.setCellValueFactory(new PropertyValueFactory<>("KeyMoney"));
+        colRoomTypeId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRoom().getRoomTypeId()));
+        colStudentId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStudent().getStudentId()));
 
 
         reservationBo = BoFactory.getBoFactory().getBo(BoFactory.BoType.RESERVATION);
         refreshTableView();
 
+        tableView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                // Detect double-click
+                ReservationDTO selectedRoom = tableView.getSelectionModel().getSelectedItem();
+                if (selectedRoom != null) {
+                    Timestamp timestamp = selectedRoom.getOrderDateTime();
+                    Instant instant = timestamp.toInstant();
+                    LocalDate localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+                    String lastDateStr = selectedRoom.getLastDate(); // Assuming lastDateStr is a date string in a compatible format
+                    LocalDate localDate2 = LocalDate.parse(lastDateStr);
+                    // Populate fields with selected room data for update or delete
+                    reservationId.setText(selectedRoom.getReservationId());
+                    roomTypeId.setText(selectedRoom.getRoom().ToDto().getRoomTypeId());
+                    status.setValue(selectedRoom.getStatus());
+                    startDate.setValue(localDate);
+                    studentId.setText(selectedRoom.getStudent().getStudentId());
+                    lastDate.setValue(localDate2);
+                    // Disable fields that should not be edited during update
+                    reservationId.setDisable(true);
 
+
+                }
+            }
+        });
     }
 
 
@@ -118,10 +144,7 @@ public class ReservationController implements Initializable {
 
     @FXML
     private void btnSaveOnAction() {
-        // Handle the Save button action here
-        // Retrieve data from the form fields and create a ReservationDTO
-        // Use reservationBo to save the reservation
-        // Refresh the TableView
+
 
         ReservationDTO reservationDTO = new ReservationDTO();
         StudentDTO studentDTO = new StudentDTO();
@@ -135,13 +158,12 @@ public class ReservationController implements Initializable {
 
         java.time.LocalDate selectedDate = startDate.getValue();
 
-        reservationDTO.setReservationId(reservationId);
+        reservationDTO.setReservationId(reservationId.getText());
         reservationDTO.setStudent(studentDTO.ToEntity());
         reservationDTO.setRoom(roomDTO.ToEntity());
         reservationDTO.setLastDate(selectedDate.toString());
         reservationDTO.setStatus(status.getValue());
         reservationDTO.setStudentName(student.getFullName());
-        reservationDTO.setKeyMoney(room.getKeyMoney());
 
         RoomDTO roomDTOAvailable = CalculateAvailableRoom(room, SelectTypeForCalculateRoom.SAVE);
         String save = reservationBo.SaveReservationDetails(reservationDTO, roomDTOAvailable);
@@ -157,12 +179,11 @@ public class ReservationController implements Initializable {
                     , "Something Wrong !" + "\n" + "Duplicate ID Entry"
                     , SelectType.WARNING);
         }
+        refreshTableView();
     }
 
     @FXML
     private void btnUpdateOnAction() {
-
-
         ReservationDTO reservationDTO = new ReservationDTO();
         StudentDTO studentDTO = new StudentDTO();
         RoomDTO roomDTO = new RoomDTO();
@@ -173,16 +194,15 @@ public class ReservationController implements Initializable {
         studentDTO.setStudentId(studentId.getText());
         roomDTO.setRoomTypeId(roomTypeId.getText());
 
-        // java.time.LocalDate selectedDate = date.getValue();
+        java.time.LocalDate selectedDate = startDate.getValue();
 
-        reservationDTO.setReservationId(reservationId);
+        reservationDTO.setReservationId(reservationId.getText());
         reservationDTO.setStudent(studentDTO.ToEntity());
         reservationDTO.setRoom(roomDTO.ToEntity());
-        //  reservationDTO.setLastDate(selectedDate.toString());
+        reservationDTO.setLastDate(selectedDate.toString());
         reservationDTO.setStatus(status.getValue());
         reservationDTO.setOrderDateTime(Timestamp.valueOf(getCurrentDateTime()));
         reservationDTO.setStudentName(student.getFullName());
-        reservationDTO.setKeyMoney(room.getKeyMoney());
 
         try {
             RoomDTO roomDTOAvailable = CalculateAvailableRoom(room, SelectTypeForCalculateRoom.UPDATE);
@@ -199,15 +219,52 @@ public class ReservationController implements Initializable {
                         , "Something Wrong !"
                         , SelectType.ERROR);
             }
-            //  reservationId.setDisable(false);
+
         } catch (Exception e) {
             throw e;
         }
+        refreshTableView();
     }
 
     @FXML
     private void btnDeleteOnAction() {
+        ReservationDTO reservationDTO = new ReservationDTO();
+        StudentDTO studentDTO = new StudentDTO();
+        RoomDTO roomDTO = new RoomDTO();
 
+        StudentDTO student = reservationBo.GetStudentName(studentId.getText());
+        RoomDTO room = reservationBo.GetKeyMoney(roomTypeId.getText());
+
+        studentDTO.setStudentId(studentId.getText());
+        roomDTO.setRoomTypeId(roomTypeId.getText());
+
+
+        java.time.LocalDate selectedDate = startDate.getValue();
+
+        reservationDTO.setReservationId(reservationId.getText());
+        reservationDTO.setStudent(studentDTO.ToEntity());
+        reservationDTO.setRoom(roomDTO.ToEntity());
+        reservationDTO.setLastDate(selectedDate.toString());
+        reservationDTO.setStatus(status.getValue());
+        reservationDTO.setOrderDateTime(Timestamp.valueOf(getCurrentDateTime()));
+        reservationDTO.setStudentName(student.getFullName());
+
+
+        boolean update = reservationBo.DeleteReservationDetails(reservationDTO);
+
+        if (update) {
+            showAlert("Reservation Management"
+                    , "Successfully Deleted Reservation Details !"
+                    , SelectType.INFORMATION);
+            setDefault();
+        } else {
+            setDefault();
+            showAlert("Reservation Management"
+                    , "Something Wrong !"
+                    , SelectType.ERROR);
+        }
+        //    reservationidtxt.setDisable(false);
+        refreshTableView();
     }
 
     @FXML
@@ -218,33 +275,9 @@ public class ReservationController implements Initializable {
         // Use reservationBo to fetch the reservation by ID
         ReservationDTO reservationDTO = reservationBo.getReservationDetails(reservationId);
 
-        // Populate the retrieved data into the form fields
 
     }
 
-    @FXML
-    private void reservationudtxtonAction(ActionEvent actionEvent) {
-        try {
-            if (reservationId != null & reservationId != ("")) {
-                try {
-                    ReservationDTO reserversiondetails = reservationBo.getReservationDetails(reservationId);
-                    studentId.setText(reserversiondetails.getStudent().getStudentId());
-                    roomTypeId.setText(reserversiondetails.getRoom().getRoomTypeId());
-                    //      date.setValue(LocalDate.parse(reserversiondetails.getLastDate()));
-                    status.setValue(reserversiondetails.getStatus());
-
-                    // reservationidtxt.setDisable(true);
-                } catch (Exception e) {
-                    setDefault();
-                    showAlert("Reservation Management"
-                            , "Something Wrong !" + "\n" + "Please Check & Enter Valid Reservation ID."
-                            , SelectType.ERROR);
-                }
-            }
-        } catch (Exception e) {
-            throw e;
-        }
-    }
 
     private void setDataForComboBox() {
         dataList.add("PAID");
@@ -252,6 +285,15 @@ public class ReservationController implements Initializable {
 
         ObservableList<String> observableList = FXCollections.observableArrayList(dataList);
         status.setItems(observableList);
+        dataList.clear();
+    }
+
+    private void setDataForComboBox2() {
+        dataList.add("PAID");
+        dataList.add("PENDING");
+
+        ObservableList<String> observableList = FXCollections.observableArrayList(dataList);
+        keyMoneyStatus.setItems(observableList);
         dataList.clear();
     }
 
@@ -281,6 +323,7 @@ public class ReservationController implements Initializable {
         alert.showAndWait();
     }
 
+
     private String getCurrentDateTime() {
         String formattedTimestamp;
 
@@ -303,7 +346,7 @@ public class ReservationController implements Initializable {
 
             return roomDTO;
         } else if (select == SelectTypeForCalculateRoom.UPDATE) {
-            ReservationDTO reservationDetails = reservationBo.getReservationDetails(reservationId);
+            ReservationDTO reservationDetails = reservationBo.getReservationDetails(reservationId.getText());
             if (roomTypeId.getText().equals(reservationDetails.getRoom().getRoomTypeId())) {
                 RoomDTO roomDTO = new RoomDTO();
 
@@ -336,6 +379,20 @@ public class ReservationController implements Initializable {
 
 
         return null;
+    }
+
+    public void codeSearchOnStatusAction(javafx.event.ActionEvent actionEvent) {
+        String selectedStatus = keyMoneyStatus.getValue(); // Get the selected status from the ComboBox
+
+        if (selectedStatus != null) {
+            List<ReservationDTO> filteredReservations = reservationBo.getReservationsByStatus(selectedStatus);
+
+            // Clear the table and add the filtered reservations
+            tableView.getItems().clear();
+            tableView.getItems().addAll(filteredReservations);
+        } else {
+            showAlert("Reservation Management", "Please select a status to filter by.", SelectType.WARNING);
+        }
     }
 
     private enum SelectType {

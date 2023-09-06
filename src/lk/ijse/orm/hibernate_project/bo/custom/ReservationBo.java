@@ -20,5 +20,7 @@ public interface ReservationBo extends SuperBo {
 
     RoomDTO GetKeyMoney(String ID);
 
+    List<ReservationDTO> getReservationsByStatus(String status);
+
     List<ReservationDTO> getAllReservations();
 }

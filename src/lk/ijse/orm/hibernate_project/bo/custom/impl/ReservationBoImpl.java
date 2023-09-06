@@ -14,6 +14,10 @@ import lk.ijse.orm.hibernate_project.entities.Student;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,10 +65,10 @@ public class ReservationBoImpl implements ReservationBo {
         Session session = SessionFactoryConfiguration.getInstance().getSession();
         try {
             reservationDao.SetSession(session);
-            List<Reservation> reservations = reservationDao.getAll(); // Implement the 'getAll' method in your ReservationDaoImpl class
+            List<Reservation> reservations = reservationDao.getAll();
             session.close();
 
-            // Convert Reservation entities to ReservationDTOs
+
             return reservations.stream()
                     .map(Reservation::ToDto)
                     .collect(Collectors.toList());
@@ -72,6 +76,30 @@ public class ReservationBoImpl implements ReservationBo {
             e.printStackTrace();
             throw e;
         }
+    }
+
+    public List<ReservationDTO> getReservationsByStatus(String status) {
+        List<ReservationDTO> filteredReservations = new ArrayList<>();
+
+        try (Session session = SessionFactoryConfiguration.getInstance().getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Reservation> criteriaQuery = builder.createQuery(Reservation.class);
+            Root<Reservation> root = criteriaQuery.from(Reservation.class);
+
+            criteriaQuery.select(root)
+                    .where(builder.equal(root.get("Status"), status));
+
+            List<Reservation> reservationEntities = session.createQuery(criteriaQuery).getResultList();
+
+            for (Reservation reservationEntity : reservationEntities) {
+                filteredReservations.add(reservationEntity.ToDto());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        return filteredReservations;
     }
 
 

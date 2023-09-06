@@ -34,13 +34,12 @@ public class Reservation {
     private String LastDate;
     @Column(name = "student_name", nullable = false, length = 50)
     private String StudentName;
-    @Column(name = "key_money", nullable = false, length = 50)
-    private String KeyMoney;
+
 
     public Reservation() {
     }
 
-    public Reservation(String reservationId, Timestamp orderDateTime, Student student, Room room, String status, String lastDate, String studentName, String keyMoney) {
+    public Reservation(String reservationId, Timestamp orderDateTime, Student student, Room room, String status, String lastDate, String studentName) {
         ReservationId = reservationId;
         OrderDateTime = orderDateTime;
         Student = student;
@@ -48,7 +47,7 @@ public class Reservation {
         Status = status;
         LastDate = lastDate;
         StudentName = studentName;
-        KeyMoney = keyMoney;
+
     }
 
     public String getReservationId() {
@@ -107,13 +106,7 @@ public class Reservation {
         StudentName = studentName;
     }
 
-    public String getKeyMoney() {
-        return KeyMoney;
-    }
 
-    public void setKeyMoney(String keyMoney) {
-        KeyMoney = keyMoney;
-    }
 
     @Override
     public String toString() {

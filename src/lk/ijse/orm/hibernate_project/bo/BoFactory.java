@@ -3,6 +3,7 @@ package lk.ijse.orm.hibernate_project.bo;
 import lk.ijse.orm.hibernate_project.bo.custom.impl.ReservationBoImpl;
 import lk.ijse.orm.hibernate_project.bo.custom.impl.RoomBoImpl;
 import lk.ijse.orm.hibernate_project.bo.custom.impl.StudentBoImpl;
+import lk.ijse.orm.hibernate_project.bo.custom.impl.UserBoImpl;
 
 public class BoFactory {
 
@@ -10,6 +11,7 @@ public class BoFactory {
     private static StudentBoImpl studentBoImpl;
     private static ReservationBoImpl reservationBoImpl;
     private static RoomBoImpl roomBoImpl;
+    private static UserBoImpl userBoImpl;
 
     private BoFactory() {
     }
@@ -26,13 +28,15 @@ public class BoFactory {
                 return (SuperBo) ((roomBoImpl == null) ? roomBoImpl = new RoomBoImpl() : roomBoImpl);
             case RESERVATION:
                 return (SuperBo) ((reservationBoImpl == null) ? reservationBoImpl = new ReservationBoImpl() : reservationBoImpl);
+            case USER:
+                return (SuperBo) ((userBoImpl == null) ? userBoImpl = new UserBoImpl() : userBoImpl);
             default:
                 return null;
         }
     }
 
     public enum BoType {
-        STUDENT, ROOM, RESERVATION
+        STUDENT, ROOM, RESERVATION, USER
     }
 
 }

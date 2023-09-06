@@ -11,7 +11,7 @@
 <?import java.net.URL?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="546.0" prefWidth="598.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8.0.171"
-            fx:controller="lk.ijse.orm.hibernate_project.controllers.ReservationController">
+            fx:controller="lk.ijse.orm.hibernate_project.controllers.RoomController">
     <stylesheets>
         <URL value="@styles.css"/>
     </stylesheets>
@@ -64,7 +64,7 @@
                 <TableColumn fx:id="colRoomTypeId" prefWidth="123.0" text="Room Type Id"/>
                 <TableColumn fx:id="colTypeId" prefWidth="136.0" text="Type"/>
                 <TableColumn fx:id="colKeyMoneyId" prefWidth="146.6666259765625" text="Key Money"/>
-                <TableColumn fx:id="coQtyId" prefWidth="130.66668701171875" text="Qty"/>
+                <TableColumn fx:id="colQtyId" prefWidth="130.66668701171875" text="Qty"/>
             </columns>
         </TableView>
         <Label layoutX="279.0" layoutY="161.0" text="Qty"/>
