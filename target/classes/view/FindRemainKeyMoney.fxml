@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" minHeight="-Infinity" minWidth="-Infinity" prefHeight="546.0" prefWidth="598.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.orm.hibernate_project.controllers.FindRemainController">
+    <stylesheets>
+        <URL value="@styles.css" />
+    </stylesheets>
+    <children>
+        <ImageView fitHeight="546.0" fitWidth="598.0" layoutX="3.0" opacity="0.34" pickOnBounds="true">
+            <image>
+                <Image url="@/img/BlueBackground.jpg" />
+            </image>
+        </ImageView>
+        <Label layoutX="38.0" layoutY="35.0" text="Find Remain Key Money">
+            <font>
+                <Font name="Lucida Console" size="20.0" />
+            </font>
+        </Label>
+        <TableView fx:id="tableView" layoutX="48.0" layoutY="101.0" prefHeight="367.0" prefWidth="488.0">
+            <columns>
+            <TableColumn fx:id="colStudentId" prefWidth="203.3333740234375" text="Student Id" />
+                <TableColumn fx:id="colStudentNameId" prefWidth="135.0" text="Student Name" />
+                <TableColumn fx:id="colStatusId" prefWidth="148.6666259765625" text="Status" />
+            </columns>
+        </TableView>
+    </children>
+    <effect>
+        <Blend />
+    </effect>
+    <cursor>
+        <Cursor fx:constant="N_RESIZE" />
+    </cursor>
+
+</AnchorPane>
