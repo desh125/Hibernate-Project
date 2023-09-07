@@ -23,4 +23,10 @@ public interface ReservationBo extends SuperBo {
     List<ReservationDTO> getReservationsByStatus(String status);
 
     List<ReservationDTO> getAllReservations();
+
+    List<ReservationDTO> getUnpaidReservationsByStudentId(String studentId) throws Exception;
+
+    List<ReservationDTO> getUnpaidStudentsWithJoinQuery();
+
+
 }

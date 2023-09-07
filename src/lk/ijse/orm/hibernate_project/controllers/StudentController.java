@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.orm.hibernate_project.bo.BoFactory;
 import lk.ijse.orm.hibernate_project.bo.custom.StudentBo;
 import lk.ijse.orm.hibernate_project.dto.StudentDTO;
+import lk.ijse.orm.hibernate_project.utils.ValidationUtils;
 
 import java.net.URL;
 import java.util.List;
@@ -107,7 +108,6 @@ public class StudentController implements Initializable {
     private void btnSaveOnAction() {
 
         studentBo = BoFactory.getBoFactory().getBo(BoFactory.BoType.STUDENT);
-
         StudentDTO studentDTO = new StudentDTO();
         studentDTO.setStudentId(txtId.getText());
         studentDTO.setFullName(txtName.getText());
@@ -115,6 +115,16 @@ public class StudentController implements Initializable {
         studentDTO.setContactNumber(txtNumber.getText());
         studentDTO.setDateOfBirth(txtDOB.getText());
         studentDTO.setGender(txtGender.getText());
+
+        if (!ValidationUtils.validatePhoneNumber(txtNumber.getText())) {
+            showAlert("Room Management", "Invalid Phone Number!", StudentController.SelectType.WARNING);
+            return;
+        }
+        if (!ValidationUtils.isValidString(txtName.getText())) {
+            showAlert("Room Management", "Invalid Name!", StudentController.SelectType.WARNING);
+            return;
+        }
+
 
         boolean saved = studentBo.SaveStudent(studentDTO);
 
@@ -138,7 +148,16 @@ public class StudentController implements Initializable {
         studentDTO.setContactNumber(txtNumber.getText());
         studentDTO.setDateOfBirth(txtDOB.getText());
         studentDTO.setGender(txtGender.getText());
-        // Set other fields as needed
+
+        if (!ValidationUtils.validatePhoneNumber(txtNumber.getText())) {
+            showAlert("Room Management", "Invalid Phone Number!", StudentController.SelectType.WARNING);
+            return;
+        }
+        if (!ValidationUtils.isValidString(txtName.getText())) {
+            showAlert("Room Management", "Invalid Name!", StudentController.SelectType.WARNING);
+            return;
+        }
+
 
         boolean update = studentBo.UpdateStudent(studentDTO);
 

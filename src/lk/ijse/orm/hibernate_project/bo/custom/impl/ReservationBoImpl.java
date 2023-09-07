@@ -46,6 +46,37 @@ public class ReservationBoImpl implements ReservationBo {
         }
     }
 
+    @Override
+    public List<ReservationDTO> getUnpaidReservationsByStudentId(String studentId) throws Exception {
+        // Add any necessary business logic here
+        List<Reservation> unpaidReservations = reservationDao.getUnpaidReservationsByStudentId(studentId);
+
+        // Convert Reservation entities to DTOs if needed
+        // You can perform this conversion here or in a separate utility class
+
+        return unpaidReservations.stream()
+                .map(Reservation::ToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ReservationDTO> getUnpaidStudentsWithJoinQuery() {
+        List<ReservationDTO> unpaidStudents = new ArrayList<>();
+
+        try {
+            List<Reservation> unpaidReservations = reservationDao.getUnpaidReservations();
+            for (Reservation reservation : unpaidReservations) {
+                unpaidStudents.add(reservation.ToDto());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Handle exceptions
+            throw e; // Rethrow the exception for the caller to handle
+        }
+
+        return unpaidStudents;
+    }
+
 
     @Override
     public ReservationDTO getReservationDetails(String reservation_id) {

@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 public class AppInitializer extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Parent parent = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml"));
+        Parent parent = FXMLLoader.load(getClass().getResource("/view/FindRemainKeyMoney.fxml"));
         stage.setScene(new Scene(parent));
         stage.setTitle("Dashboard");
         stage.centerOnScreen();

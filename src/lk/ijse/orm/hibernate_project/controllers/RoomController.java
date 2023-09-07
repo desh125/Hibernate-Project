@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.orm.hibernate_project.bo.BoFactory;
 import lk.ijse.orm.hibernate_project.bo.custom.RoomBo;
 import lk.ijse.orm.hibernate_project.dto.RoomDTO;
+import lk.ijse.orm.hibernate_project.utils.ValidationUtils;
 
 import java.net.URL;
 import java.util.List;
@@ -102,7 +103,8 @@ public class RoomController implements Initializable {
 
     @FXML
     private void btnSaveOnAction() {
-
+        String keyMoneyValue = keyMoney.getText().trim();
+        String qtyValue = qty.getText().trim();
         roomBo = BoFactory.getBoFactory().getBo(BoFactory.BoType.ROOM);
         int roomQty = Integer.parseInt(qty.getText());
         RoomDTO roomDTO = new RoomDTO();
@@ -110,6 +112,17 @@ public class RoomController implements Initializable {
         roomDTO.setType(type.getText());
         roomDTO.setKeyMoney(keyMoney.getText());
         roomDTO.setQty(roomQty);
+
+
+        if (!ValidationUtils.isValidKeyMoney(keyMoneyValue)) {
+            showAlert("Room Management", "Invalid Key Money!", SelectType.WARNING);
+            return;
+        }
+
+        if (!ValidationUtils.isValidQuantity(qtyValue)) {
+            showAlert("Room Management", "Invalid Quantity!", SelectType.WARNING);
+            return;
+        }
         boolean saved = roomBo.SaveRoom(roomDTO);
 
         if (saved) {
@@ -124,7 +137,8 @@ public class RoomController implements Initializable {
 
     @FXML
     private void btnUpdateOnAction() {
-
+        String keyMoneyValue = keyMoney.getText().trim();
+        String qtyValue = qty.getText().trim();
         int roomQty = Integer.parseInt(qty.getText());
         RoomDTO roomDTO = new RoomDTO();
         roomDTO.setRoomTypeId(roomTypeId.getText());
@@ -132,6 +146,15 @@ public class RoomController implements Initializable {
         roomDTO.setKeyMoney(keyMoney.getText());
         roomDTO.setQty(roomQty);
 
+        if (!ValidationUtils.isValidKeyMoney(keyMoneyValue)) {
+            showAlert("Room Management", "Invalid Key Money!", SelectType.WARNING);
+            return;
+        }
+
+        if (!ValidationUtils.isValidQuantity(qtyValue)) {
+            showAlert("Room Management", "Invalid Quantity!", SelectType.WARNING);
+            return;
+        }
         boolean update = roomBo.UpdateRoom(roomDTO);
 
         if (update) {
