@@ -3,6 +3,7 @@ package lk.ijse.orm.hibernate_project.entities;
 import lk.ijse.orm.hibernate_project.dto.StudentDTO;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class Student {
     @Column(name = "contact_number", nullable = false, length = 50)
     private String ContactNumber;
     @Column(name = "dob", nullable = false, length = 50)
-    private String DateOfBirth;
+    private Date DateOfBirth;
     @Column(name = "gender", nullable = false, length = 50)
     private String Gender;
 
@@ -29,7 +30,7 @@ public class Student {
     public Student() {
     }
 
-    public Student(String studentId, String fullName, String address, String contactNumber, String dateOfBirth, String gender, List<Reservation> reservationEntities) {
+    public Student(String studentId, String fullName, String address, String contactNumber, Date dateOfBirth, String gender, List<Reservation> reservationEntities) {
         StudentId = studentId;
         FullName = fullName;
         Address = address;
@@ -71,11 +72,11 @@ public class Student {
         ContactNumber = contactNumber;
     }
 
-    public String getDateOfBirth() {
+    public Date getDateOfBirth() {
         return DateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         DateOfBirth = dateOfBirth;
     }
 

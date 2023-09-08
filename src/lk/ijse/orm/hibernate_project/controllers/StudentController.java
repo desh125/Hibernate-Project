@@ -4,10 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.orm.hibernate_project.bo.BoFactory;
 import lk.ijse.orm.hibernate_project.bo.custom.StudentBo;
@@ -15,6 +12,7 @@ import lk.ijse.orm.hibernate_project.dto.StudentDTO;
 import lk.ijse.orm.hibernate_project.utils.ValidationUtils;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -36,7 +34,7 @@ public class StudentController implements Initializable {
     private TextField txtGender;
 
     @FXML
-    private TextField txtDOB;
+    private DatePicker txtDOB;
 
     @FXML
     private TextField txtId1;
@@ -90,7 +88,7 @@ public class StudentController implements Initializable {
                     // Populate fields with selected student data for update or delete
                     txtId.setText(selectedStudent.getStudentId());
                     txtName.setText(selectedStudent.getFullName());
-                    txtDOB.setText(selectedStudent.getDateOfBirth());
+                    txtDOB.setValue(selectedStudent.getDateOfBirth().toLocalDate());
                     txtAddress.setText(selectedStudent.getAddress());
                     txtNumber.setText(selectedStudent.getContactNumber());
                     txtGender.setText(selectedStudent.getGender());
@@ -106,14 +104,16 @@ public class StudentController implements Initializable {
 
     @FXML
     private void btnSaveOnAction() {
-
+        LocalDate localLastDate = txtDOB.getValue();
         studentBo = BoFactory.getBoFactory().getBo(BoFactory.BoType.STUDENT);
         StudentDTO studentDTO = new StudentDTO();
         studentDTO.setStudentId(txtId.getText());
         studentDTO.setFullName(txtName.getText());
         studentDTO.setAddress(txtAddress.getText());
         studentDTO.setContactNumber(txtNumber.getText());
-        studentDTO.setDateOfBirth(txtDOB.getText());
+        java.sql.Date sqlLastDate = java.sql.Date.valueOf(localLastDate); // Convert LocalDate to java.sql.Date
+        studentDTO.setDateOfBirth(sqlLastDate);
+
         studentDTO.setGender(txtGender.getText());
 
         if (!ValidationUtils.validatePhoneNumber(txtNumber.getText())) {
@@ -140,13 +140,14 @@ public class StudentController implements Initializable {
 
     @FXML
     private void btnUpdateOnAction() {
-
+        LocalDate localLastDate = txtDOB.getValue();
         StudentDTO studentDTO = new StudentDTO();
         studentDTO.setStudentId(txtId.getText());
         studentDTO.setFullName(txtName.getText());
         studentDTO.setAddress(txtAddress.getText());
         studentDTO.setContactNumber(txtNumber.getText());
-        studentDTO.setDateOfBirth(txtDOB.getText());
+        java.sql.Date sqlLastDate = java.sql.Date.valueOf(localLastDate); // Convert LocalDate to java.sql.Date
+        studentDTO.setDateOfBirth(sqlLastDate);
         studentDTO.setGender(txtGender.getText());
 
         if (!ValidationUtils.validatePhoneNumber(txtNumber.getText())) {
@@ -174,7 +175,6 @@ public class StudentController implements Initializable {
 
     @FXML
     private void btnDeleteOnAction() {
-
 
         String studentId = txtId.getText();
 
@@ -215,7 +215,7 @@ public class StudentController implements Initializable {
                 // Populate the retrieved data into the form fields
                 txtId.setText(studentDTO.getStudentId());
                 txtName.setText(studentDTO.getFullName());
-                txtDOB.setText(studentDTO.getDateOfBirth());
+                txtDOB.setValue(studentDTO.getDateOfBirth().toLocalDate());
                 txtAddress.setText(studentDTO.getAddress());
                 txtNumber.setText(studentDTO.getContactNumber());
                 txtGender.setText(studentDTO.getGender());
@@ -245,7 +245,7 @@ public class StudentController implements Initializable {
         txtAddress.clear();
         txtNumber.clear();
         txtGender.clear();
-        txtDOB.clear();
+        txtDOB.setValue(null);
         txtId1.clear();
     }
 

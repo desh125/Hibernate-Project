@@ -4,6 +4,7 @@ import lk.ijse.orm.hibernate_project.entities.Reservation;
 import lk.ijse.orm.hibernate_project.entities.Student;
 import lombok.*;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class StudentDTO {
     private String FullName;
     private String Address;
     private String ContactNumber;
-    private String DateOfBirth;
+    private Date DateOfBirth;
     private String Gender;
     private List<Reservation> reservationEntities = new ArrayList<>();
 
