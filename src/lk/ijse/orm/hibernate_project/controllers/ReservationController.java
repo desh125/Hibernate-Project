@@ -19,9 +19,7 @@ import lk.ijse.orm.hibernate_project.dto.StudentDTO;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -47,22 +45,11 @@ public class ReservationController implements Initializable {
     private DatePicker lastDate;
 
     @FXML
-    private TextField keyMoney;
-
-    @FXML
-    private JFXButton btnSave;
-
-    @FXML
     private TextField txtId1;
 
     @FXML
     private JFXButton searchButton;
 
-    @FXML
-    private JFXButton btnUpdate;
-
-    @FXML
-    private JFXButton btnDelete;
 
     @FXML
     private ComboBox<String> keyMoneyStatus;
@@ -112,18 +99,12 @@ public class ReservationController implements Initializable {
                 // Detect double-click
                 ReservationDTO selectedRoom = tableView.getSelectionModel().getSelectedItem();
                 if (selectedRoom != null) {
-                    Timestamp timestamp = selectedRoom.getOrderDateTime();
-                    Instant instant = timestamp.toInstant();
-                    LocalDate localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
-                    String lastDateStr = selectedRoom.getLastDate(); // Assuming lastDateStr is a date string in a compatible format
-                    LocalDate localDate2 = LocalDate.parse(lastDateStr);
-                    // Populate fields with selected room data for update or delete
                     reservationId.setText(selectedRoom.getReservationId());
                     roomTypeId.setText(selectedRoom.getRoom().ToDto().getRoomTypeId());
                     status.setValue(selectedRoom.getStatus());
-                    startDate.setValue(localDate);
+                    startDate.setValue(selectedRoom.getOrderDateTime().toLocalDate());
                     studentId.setText(selectedRoom.getStudent().getStudentId());
-                    lastDate.setValue(localDate2);
+                    lastDate.setValue(selectedRoom.getLastDate().toLocalDate());
                     // Disable fields that should not be edited during update
                     reservationId.setDisable(true);
 
@@ -134,17 +115,36 @@ public class ReservationController implements Initializable {
     }
 
 
-
     private void refreshTableView() {
         // Fetch data from your Bo and populate the TableView
         List<ReservationDTO> reservations = reservationBo.getAllReservations();
         ObservableList<ReservationDTO> reservationList = FXCollections.observableArrayList(reservations);
         tableView.setItems(reservationList);
+
     }
+
+    private void clearFields() {
+        reservationId.clear();
+        studentId.clear();
+        roomTypeId.clear();
+        status.setValue(null);
+        startDate.setValue(null);
+        lastDate.setValue(null);
+    }
+
 
     @FXML
     private void btnSaveOnAction() {
+        String studentIdText = studentId.getText().trim();
+        String roomTypeIdText = roomTypeId.getText().trim();
+        LocalDate localLastDate = lastDate.getValue();
+        LocalDate localStartDate = startDate.getValue();
 
+        // Check if any of the fields is empty
+        if (studentIdText.isEmpty() || roomTypeIdText.isEmpty() || localLastDate == null || localStartDate == null) {
+            showAlert("Reservation Management", "Fill in all fields", SelectType.ERROR);
+            return; // Stop processing if any field is empty
+        }
 
         ReservationDTO reservationDTO = new ReservationDTO();
         StudentDTO studentDTO = new StudentDTO();
@@ -153,15 +153,27 @@ public class ReservationController implements Initializable {
         StudentDTO student = reservationBo.GetStudentName(studentId.getText());
         RoomDTO room = reservationBo.GetKeyMoney(roomTypeId.getText());
 
+        if (student == null) {
+            showAlert("Reservation Management", "Invalid Student ID", SelectType.ERROR);
+            return; //
+        }
+
+        if (room == null) {
+            showAlert("Reservation Management", "Invalid Room Type ID", SelectType.ERROR);
+            return; //
+        }
         studentDTO.setStudentId(studentId.getText());
         roomDTO.setRoomTypeId(roomTypeId.getText());
 
-        java.time.LocalDate selectedDate = startDate.getValue();
+        java.sql.Date sqlLastDate = java.sql.Date.valueOf(localLastDate); // Convert LocalDate to java.sql.Date
+        reservationDTO.setLastDate(sqlLastDate);
+
+        java.sql.Date sqlStartDate = java.sql.Date.valueOf(localStartDate); // Convert LocalDate to java.sql.Date
+        reservationDTO.setOrderDateTime(sqlStartDate);
 
         reservationDTO.setReservationId(reservationId.getText());
         reservationDTO.setStudent(studentDTO.ToEntity());
         reservationDTO.setRoom(roomDTO.ToEntity());
-        reservationDTO.setLastDate(selectedDate.toString());
         reservationDTO.setStatus(status.getValue());
         reservationDTO.setStudentName(student.getFullName());
 
@@ -180,28 +192,49 @@ public class ReservationController implements Initializable {
                     , SelectType.WARNING);
         }
         refreshTableView();
+        clearFields();
     }
 
     @FXML
     private void btnUpdateOnAction() {
+        String studentIdText = studentId.getText().trim();
+        String roomTypeIdText = roomTypeId.getText().trim();
+        LocalDate localLastDate = lastDate.getValue();
+        LocalDate localStartDate = startDate.getValue();
+
+        // Check if any of the fields is empty
+        if (studentIdText.isEmpty() || roomTypeIdText.isEmpty() || localLastDate == null || localStartDate == null) {
+            showAlert("Reservation Management", "Fill in all fields", SelectType.ERROR);
+            return; // Stop processing if any field is empty
+        }
+
         ReservationDTO reservationDTO = new ReservationDTO();
         StudentDTO studentDTO = new StudentDTO();
         RoomDTO roomDTO = new RoomDTO();
 
         StudentDTO student = reservationBo.GetStudentName(studentId.getText());
         RoomDTO room = reservationBo.GetKeyMoney(roomTypeId.getText());
+        if (student == null) {
+            showAlert("Reservation Management", "Invalid Student ID", SelectType.ERROR);
+            return; //
+        }
 
+        if (room == null) {
+            showAlert("Reservation Management", "Invalid Room Type ID", SelectType.ERROR);
+            return; //
+        }
         studentDTO.setStudentId(studentId.getText());
         roomDTO.setRoomTypeId(roomTypeId.getText());
 
-        java.time.LocalDate selectedDate = startDate.getValue();
+        java.sql.Date sqlLastDate = java.sql.Date.valueOf(localLastDate); // Convert LocalDate to java.sql.Date
+        reservationDTO.setLastDate(sqlLastDate);
+        java.sql.Date sqlStartDate = java.sql.Date.valueOf(localStartDate); // Convert LocalDate to java.sql.Date
+        reservationDTO.setOrderDateTime(sqlStartDate);
 
         reservationDTO.setReservationId(reservationId.getText());
         reservationDTO.setStudent(studentDTO.ToEntity());
         reservationDTO.setRoom(roomDTO.ToEntity());
-        reservationDTO.setLastDate(selectedDate.toString());
         reservationDTO.setStatus(status.getValue());
-        reservationDTO.setOrderDateTime(Timestamp.valueOf(getCurrentDateTime()));
         reservationDTO.setStudentName(student.getFullName());
 
         try {
@@ -224,33 +257,54 @@ public class ReservationController implements Initializable {
             throw e;
         }
         refreshTableView();
+        clearFields();
+        reservationId.setDisable(false);
     }
 
     @FXML
     private void btnDeleteOnAction() {
+
+        String studentIdText = studentId.getText().trim();
+        String roomTypeIdText = roomTypeId.getText().trim();
+        LocalDate localLastDate = lastDate.getValue();
+        LocalDate localStartDate = startDate.getValue();
+
+        // Check if any of the fields is empty
+        if (studentIdText.isEmpty() || roomTypeIdText.isEmpty() || localLastDate == null || localStartDate == null) {
+            showAlert("Reservation Management", "Fill in all fields", SelectType.ERROR);
+            return; // Stop processing if any field is empty
+        }
+
         ReservationDTO reservationDTO = new ReservationDTO();
         StudentDTO studentDTO = new StudentDTO();
         RoomDTO roomDTO = new RoomDTO();
 
         StudentDTO student = reservationBo.GetStudentName(studentId.getText());
         RoomDTO room = reservationBo.GetKeyMoney(roomTypeId.getText());
+        if (student == null) {
+            showAlert("Reservation Management", "Invalid Student ID", SelectType.ERROR);
+            return; //
+        }
 
+        if (room == null) {
+            showAlert("Reservation Management", "Invalid Room Type ID", SelectType.ERROR);
+            return; //
+        }
         studentDTO.setStudentId(studentId.getText());
         roomDTO.setRoomTypeId(roomTypeId.getText());
-
-
-        java.time.LocalDate selectedDate = startDate.getValue();
+        java.sql.Date sqlLastDate = java.sql.Date.valueOf(localLastDate); // Convert LocalDate to java.sql.Date
+        reservationDTO.setLastDate(sqlLastDate);
+        java.sql.Date sqlStartDate = java.sql.Date.valueOf(localStartDate); // Convert LocalDate to java.sql.Date
+        reservationDTO.setOrderDateTime(sqlStartDate);
 
         reservationDTO.setReservationId(reservationId.getText());
         reservationDTO.setStudent(studentDTO.ToEntity());
         reservationDTO.setRoom(roomDTO.ToEntity());
-        reservationDTO.setLastDate(selectedDate.toString());
         reservationDTO.setStatus(status.getValue());
-        reservationDTO.setOrderDateTime(Timestamp.valueOf(getCurrentDateTime()));
         reservationDTO.setStudentName(student.getFullName());
 
-
-        boolean update = reservationBo.DeleteReservationDetails(reservationDTO);
+        RoomDTO roomDTOAvailable = CalculateAvailableRoom(room, SelectTypeForCalculateRoom.DELETE);
+        boolean update = reservationBo.DeleteReservationDetails(reservationDTO, roomDTOAvailable);
 
         if (update) {
             showAlert("Reservation Management"
@@ -265,6 +319,8 @@ public class ReservationController implements Initializable {
         }
         //    reservationidtxt.setDisable(false);
         refreshTableView();
+        clearFields();
+        reservationId.setDisable(false);
     }
 
     @FXML
@@ -375,10 +431,21 @@ public class ReservationController implements Initializable {
 
 
             }
+        } else if (select == SelectTypeForCalculateRoom.DELETE) {
+            ReservationDTO reserversiondetails = reservationBo.getReservationDetails(reservationId.getText());
+
+            RoomDTO roomDTOReturn = new RoomDTO();
+
+            roomDTOReturn.setRoomTypeId(reserversiondetails.getRoom().getRoomTypeId());
+            roomDTOReturn.setKeyMoney(reserversiondetails.getRoom().getKeyMoney());
+            roomDTOReturn.setQty((reserversiondetails.getRoom().getQty() + 1));
+            roomDTOReturn.setType(reserversiondetails.getRoom().getType());
+
+            return roomDTOReturn;
+        } else {
+            return null;
         }
 
-
-        return null;
     }
 
     public void codeSearchOnStatusAction(javafx.event.ActionEvent actionEvent) {

@@ -5,9 +5,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -36,7 +39,15 @@ public class DashboardController {
 
     }
 
-    public void handleLogout(MouseEvent event) {
+    public void handleLogout(MouseEvent event) throws IOException {
+
+        Stage stage = (Stage) root.getScene().getWindow();
+        Parent parent = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml"));
+        stage.setScene(new Scene(parent));
+        stage.setTitle("Dashboard");
+        stage.centerOnScreen();
+        stage.show();
+
     }
 
     public void roomsManagementController(ActionEvent actionEvent) {
@@ -82,5 +93,20 @@ public class DashboardController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void KeyMoneyManagementController(ActionEvent actionEvent) {
+        try {
+            Pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/FindRemainKeyMoney.fxml")));
+            setNode(Pane);
+
+            // Set the preferred width and height of the loaded FXML file to fit the holdPane
+            Pane.setPrefWidth(holdPane.getWidth());
+            Pane.setPrefHeight(holdPane.getHeight());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

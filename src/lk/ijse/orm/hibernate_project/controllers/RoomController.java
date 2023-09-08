@@ -103,6 +103,10 @@ public class RoomController implements Initializable {
 
     @FXML
     private void btnSaveOnAction() {
+        if (roomTypeId.getText().isEmpty() || type.getText().isEmpty() || keyMoney.getText().isEmpty() || qty.getText().isEmpty()) {
+            showAlert("Reservation Management", "Fill in all fields", RoomController.SelectType.ERROR);
+            return; // Stop processing if any field is empty
+        }
         String keyMoneyValue = keyMoney.getText().trim();
         String qtyValue = qty.getText().trim();
         roomBo = BoFactory.getBoFactory().getBo(BoFactory.BoType.ROOM);
@@ -139,12 +143,6 @@ public class RoomController implements Initializable {
     private void btnUpdateOnAction() {
         String keyMoneyValue = keyMoney.getText().trim();
         String qtyValue = qty.getText().trim();
-        int roomQty = Integer.parseInt(qty.getText());
-        RoomDTO roomDTO = new RoomDTO();
-        roomDTO.setRoomTypeId(roomTypeId.getText());
-        roomDTO.setType(type.getText());
-        roomDTO.setKeyMoney(keyMoney.getText());
-        roomDTO.setQty(roomQty);
 
         if (!ValidationUtils.isValidKeyMoney(keyMoneyValue)) {
             showAlert("Room Management", "Invalid Key Money!", SelectType.WARNING);
@@ -155,6 +153,14 @@ public class RoomController implements Initializable {
             showAlert("Room Management", "Invalid Quantity!", SelectType.WARNING);
             return;
         }
+
+        int roomQty = Integer.parseInt(qty.getText());
+        RoomDTO roomDTO = new RoomDTO();
+        roomDTO.setRoomTypeId(roomTypeId.getText());
+        roomDTO.setType(type.getText());
+        roomDTO.setKeyMoney(keyMoneyValue);
+        roomDTO.setQty(roomQty);
+
         boolean update = roomBo.UpdateRoom(roomDTO);
 
         if (update) {
@@ -164,6 +170,9 @@ public class RoomController implements Initializable {
         } else {
             showAlert("Room Management", "Something Went Wrong!", SelectType.ERROR);
         }
+        roomTypeId.setDisable(false);
+        refreshTableView();
+
     }
 
     @FXML
@@ -191,6 +200,8 @@ public class RoomController implements Initializable {
         } else {
             showAlert("Room Management", "Room not found with ID: " + roomTypeIdValue, SelectType.WARNING);
         }
+        roomTypeId.setDisable(false);
+        refreshTableView();
     }
 
     @FXML

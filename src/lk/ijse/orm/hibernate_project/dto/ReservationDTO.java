@@ -5,7 +5,7 @@ import lk.ijse.orm.hibernate_project.entities.Room;
 import lk.ijse.orm.hibernate_project.entities.Student;
 import lombok.*;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,8 +15,8 @@ import java.sql.Timestamp;
 public class ReservationDTO {
 
     private String ReservationId;
-    private String LastDate;
-    private Timestamp OrderDateTime;
+    private Date LastDate;
+    private Date OrderDateTime;
     private Student Student;
     private Room Room;
     private String Status;

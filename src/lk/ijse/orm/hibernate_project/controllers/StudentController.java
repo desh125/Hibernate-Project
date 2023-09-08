@@ -168,6 +168,8 @@ public class StudentController implements Initializable {
         } else {
             showAlert("Student Management", "Something Went Wrong!", SelectType.ERROR);
         }
+        refreshTableView();
+        txtId.setDisable(false);
     }
 
     @FXML
@@ -192,6 +194,8 @@ public class StudentController implements Initializable {
         } else {
             showAlert("Student Management", "Student not found with ID: " + studentId, SelectType.WARNING);
         }
+        refreshTableView();
+        txtId.setDisable(false);
     }
 
 

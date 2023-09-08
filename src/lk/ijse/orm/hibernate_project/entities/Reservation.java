@@ -1,10 +1,9 @@
 package lk.ijse.orm.hibernate_project.entities;
 
 import lk.ijse.orm.hibernate_project.dto.ReservationDTO;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.sql.Date;
 
 @Entity
 @Table(name = "reservation")
@@ -13,9 +12,9 @@ public class Reservation {
     @Id
     @Column(name = "reservation_id", length = 50)
     private String ReservationId;
-    @CreationTimestamp
+
     @Column(name = "date_")
-    private Timestamp OrderDateTime;
+    private Date OrderDateTime;
     @ManyToOne
     @JoinColumn(name = "student_id",
             referencedColumnName = "student_id",
@@ -31,7 +30,7 @@ public class Reservation {
     @Column(name = "status", length = 50)
     private String Status;
     @Column(name = "exp", nullable = false, length = 50)
-    private String LastDate;
+    private Date LastDate;
     @Column(name = "student_name", nullable = false, length = 50)
     private String StudentName;
 
@@ -39,7 +38,7 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(String reservationId, Timestamp orderDateTime, Student student, Room room, String status, String lastDate, String studentName) {
+    public Reservation(String reservationId, Date orderDateTime, Student student, Room room, String status, Date lastDate, String studentName) {
         ReservationId = reservationId;
         OrderDateTime = orderDateTime;
         Student = student;
@@ -58,11 +57,11 @@ public class Reservation {
         ReservationId = reservationId;
     }
 
-    public Timestamp getOrderDateTime() {
+    public Date getOrderDateTime() {
         return OrderDateTime;
     }
 
-    public void setOrderDateTime(Timestamp orderDateTime) {
+    public void setOrderDateTime(Date orderDateTime) {
         OrderDateTime = orderDateTime;
     }
 
@@ -90,11 +89,11 @@ public class Reservation {
         Status = status;
     }
 
-    public String getLastDate() {
+    public Date getLastDate() {
         return LastDate;
     }
 
-    public void setLastDate(String lastDate) {
+    public void setLastDate(Date lastDate) {
         LastDate = lastDate;
     }
 

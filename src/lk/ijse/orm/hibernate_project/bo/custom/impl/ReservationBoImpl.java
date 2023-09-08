@@ -155,12 +155,14 @@ public class ReservationBoImpl implements ReservationBo {
     }
 
     @Override
-    public boolean DeleteReservationDetails(ReservationDTO reservationDTO) {
+    public boolean DeleteReservationDetails(ReservationDTO reservationDTO, RoomDTO roomDTO) {
         Session session = SessionFactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
         try {
             reservationDao.SetSession(session);
+            roomDao.SetSession(session);
             reservationDao.Delete(reservationDTO.ToEntity());
+            roomDao.Update(roomDTO.ToEntity());
             transaction.commit();
             session.close();
             return true;
@@ -178,8 +180,14 @@ public class ReservationBoImpl implements ReservationBo {
         try {
             reservationDao.SetSession(session);
             List<Student> student = reservationDao.GetStudentName(ID);
+
+            if (student.isEmpty()) {
+                return null; // Return null when no matching student is found.
+            }
+
             Student studentEntity = student.get(0);
             session.close();
+
             return studentEntity.ToDto();
         } catch (Exception e) {
             e.printStackTrace();
@@ -187,18 +195,26 @@ public class ReservationBoImpl implements ReservationBo {
         }
     }
 
+
     @Override
     public RoomDTO GetKeyMoney(String ID) {
         Session session = SessionFactoryConfiguration.getInstance().getSession();
         try {
             reservationDao.SetSession(session);
             List<Room> room = reservationDao.GetKeyMoney(ID);
+
+            if (room.isEmpty()) {
+                return null; // Return null when no matching room is found.
+            }
+
             Room roomEntity = room.get(0);
             session.close();
+
             return roomEntity.ToDto();
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
     }
+
 }

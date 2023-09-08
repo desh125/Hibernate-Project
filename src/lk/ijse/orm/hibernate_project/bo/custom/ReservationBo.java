@@ -14,7 +14,7 @@ public interface ReservationBo extends SuperBo {
 
     boolean UpdateReservationDetails(ReservationDTO reservationDTO, RoomDTO roomDTO);
 
-    boolean DeleteReservationDetails(ReservationDTO reservationDTO);
+    boolean DeleteReservationDetails(ReservationDTO reservationDTO, RoomDTO roomDTO);
 
     StudentDTO GetStudentName(String ID);
 

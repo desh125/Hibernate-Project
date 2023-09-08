@@ -8,34 +8,38 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.io.IOException;
+import java.util.Properties;
+
 public class SessionFactoryConfiguration {
-    private static SessionFactoryConfiguration factoryConfig;
+    private static SessionFactoryConfiguration sessionFactoryConfig;
     private final SessionFactory sessionFactory;
 
     private SessionFactoryConfiguration() {
-        sessionFactory = new Configuration()
-                .configure()
-                .addAnnotatedClass(Student.class)
-                .addAnnotatedClass(Room.class)
-                .addAnnotatedClass(Reservation.class)
-                .addAnnotatedClass(User.class)
-                .buildSessionFactory();
+        Configuration configuration = new Configuration();
+        configuration.addAnnotatedClass(Student.class);
+        configuration.addAnnotatedClass(Room.class);
+        configuration.addAnnotatedClass(Reservation.class);
+        configuration.addAnnotatedClass(User.class);
 
+        Properties properties = new Properties();
+        try {
+            properties.load(getClass().getResourceAsStream("/hibernate.properties"));
+        } catch (IOException e) {
+            System.out.println("File not found: hibernate.properties");
+        }
+        configuration.setProperties(properties);
+
+        sessionFactory = configuration.buildSessionFactory();
     }
 
     public static SessionFactoryConfiguration getInstance() {
-        return (factoryConfig == null) ? factoryConfig = new SessionFactoryConfiguration() : factoryConfig;
+        return (sessionFactoryConfig == null) ?
+                sessionFactoryConfig = new SessionFactoryConfiguration() :
+                sessionFactoryConfig;
     }
 
-    public Session getSession() {
-
-     /*   Properties properties = new Properties();
-
-        try {
-            properties.load(SessionFactoryConfiguration.class.getResourceAsStream("hibernate.properties"));
-        } catch (Exception e) {}
-*/
+    public final Session getSession() {
         return sessionFactory.openSession();
     }
-
 }

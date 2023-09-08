@@ -49,6 +49,10 @@ public class PasswordResetController {
             return;
         }
 
+        if (newPassword.length() < 8) {
+            showAlert(Alert.AlertType.ERROR, "Error", "New password must contain 8 characters");
+            return;
+        }
         if (!newPassword.equals(confirmPassword)) {
             showAlert(Alert.AlertType.ERROR, "Error", "New password and confirm password do not match.");
             return;
