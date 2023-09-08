@@ -26,6 +26,7 @@ public class ReservationDTO {
         Reservation reservation = new Reservation();
         reservation.setReservationId(this.ReservationId);
         reservation.setLastDate(this.LastDate);
+        reservation.setOrderDateTime(this.OrderDateTime);
         reservation.setStudent(this.Student);
         reservation.setRoom(this.Room);
         reservation.setStatus(this.Status);

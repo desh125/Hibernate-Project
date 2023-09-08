@@ -109,14 +109,6 @@ public class RoomController implements Initializable {
         }
         String keyMoneyValue = keyMoney.getText().trim();
         String qtyValue = qty.getText().trim();
-        roomBo = BoFactory.getBoFactory().getBo(BoFactory.BoType.ROOM);
-        int roomQty = Integer.parseInt(qty.getText());
-        RoomDTO roomDTO = new RoomDTO();
-        roomDTO.setRoomTypeId(roomTypeId.getText());
-        roomDTO.setType(type.getText());
-        roomDTO.setKeyMoney(keyMoney.getText());
-        roomDTO.setQty(roomQty);
-
 
         if (!ValidationUtils.isValidKeyMoney(keyMoneyValue)) {
             showAlert("Room Management", "Invalid Key Money!", SelectType.WARNING);
@@ -127,6 +119,15 @@ public class RoomController implements Initializable {
             showAlert("Room Management", "Invalid Quantity!", SelectType.WARNING);
             return;
         }
+        roomBo = BoFactory.getBoFactory().getBo(BoFactory.BoType.ROOM);
+        int roomQty = Integer.parseInt(qty.getText());
+        RoomDTO roomDTO = new RoomDTO();
+        roomDTO.setRoomTypeId(roomTypeId.getText());
+        roomDTO.setType(type.getText());
+        roomDTO.setKeyMoney(keyMoney.getText());
+        roomDTO.setQty(roomQty);
+
+
         boolean saved = roomBo.SaveRoom(roomDTO);
 
         if (saved) {
